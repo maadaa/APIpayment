@@ -19,7 +19,7 @@ $ mvn clean install dockerfile:build
 ```
 Já vamos ter os testes executados, build do projeto com todas suas dependências e nossa imagem para o terceiro passo, vamos rodar nosso container e criar um link com o do mysql:
 ```sh
-docker run -d \
+$ docker run -d \
     --name api-payment \
     --link docker-mysql:mysql \
     -p 8080:8080 \

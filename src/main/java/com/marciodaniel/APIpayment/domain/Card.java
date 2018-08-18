@@ -6,24 +6,38 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 @Entity
 @Table(name = "card")
 public class Card {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "holder_name")
     private String holderName;
 
-    private Long number;
+    @Column(name = "number")
+    private String number;
 
-    private Date expirationDate;
+    @Column(name = "expiration_date")
+    private String expirationDate;
 
+    @Column(name = "cvv")
     private int cvv;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Card() {
+
+    }
+
+    public Card(String holderName, String number, String expirationDate, int cvv) {
+        this.holderName = holderName;
+        this.number = number;
+        this.expirationDate = expirationDate;
+        this.cvv = cvv;
+    }
+
     public Long getId() {
         return id;
     }
@@ -32,7 +46,6 @@ public class Card {
         this.id = id;
     }
 
-    @Column(name = "holder_name")
     public String getHolderName() {
         return holderName;
     }
@@ -41,29 +54,38 @@ public class Card {
         this.holderName = holderName;
     }
 
-    @Column(name = "number")
-    public Long getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Long number) {
+    public void setNumber(String number) {
         this.number = number;
     }
-    @Column(name = "expiration_date")
-    public Date getExpirationDate() {
+
+    public String getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
     }
 
-    @Column(name = "cvv")
     public int getCvv() {
         return cvv;
     }
 
     public void setCvv(int cvv) {
         this.cvv = cvv;
+    }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "id=" + id +
+                ", holderName='" + holderName + '\'' +
+                ", number='" + number + '\'' +
+                ", expirationDate='" + expirationDate + '\'' +
+                ", cvv=" + cvv +
+                '}';
     }
 }

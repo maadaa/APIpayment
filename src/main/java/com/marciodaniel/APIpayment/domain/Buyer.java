@@ -11,16 +11,29 @@ import javax.persistence.Table;
 @Table(name = "buyer")
 public class Buyer {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "email", nullable = false)
     private String email;
 
-    private Long cpf;
+    @Column(name = "cpf", nullable = false)
+    private String cpf;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Buyer() {
+
+    }
+
+    public Buyer(String name, String email, String cpf) {
+        this.name = name;
+        this.email = email;
+        this.cpf = cpf;
+    }
+
     public Long getId() {
         return id;
     }
@@ -29,7 +42,6 @@ public class Buyer {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -38,7 +50,6 @@ public class Buyer {
         this.name = name;
     }
 
-    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -47,12 +58,21 @@ public class Buyer {
         this.email = email;
     }
 
-    @Column(name = "cpf")
-    public Long getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(Long cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    @Override
+    public String toString() {
+        return "Buyer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", cpf='" + cpf + '\'' +
+                '}';
     }
 }

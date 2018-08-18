@@ -11,12 +11,25 @@ import javax.persistence.Table;
 @Table(name = "client")
 public class Client {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "social_name", nullable = false)
     private String socialName;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Client() {
+
+    }
+
+    public Client(Long id) {
+        this.id = id;
+    }
+
+    public Client(String socialName) {
+        this.socialName = socialName;
+    }
+
     public Long getId() {
         return id;
     }
@@ -25,12 +38,19 @@ public class Client {
         this.id = id;
     }
 
-    @Column(name = "social_name")
     public String getSocialName() {
         return socialName;
     }
 
     public void setSocialName(String socialName) {
         this.socialName = socialName;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", socialName='" + socialName + '\'' +
+                '}';
     }
 }

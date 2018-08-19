@@ -31,4 +31,14 @@ $ docker run -d \
     apipayment
 ```
 
-Com o projeto rodando é só acessar seu [LocalHost](http://localhost:8080/) para inserir um pagamento.
+Com o projeto rodando é só acessar seu [LocalHost:8080](http://localhost:8080/) para inserir um pagamento.
+
+# Arquitetura
+
+Para realizar este teste foram escolhidas as seguintes tecnologias:
+
+- Spring Framework
+- MySql
+
+Para o Banco de Dados foi adotado a seguinte estrutura para tabelas que pode ser visualizada nesta imagem: ![Estrutura do Banco](https://github.com/moreiraMD/APIpayment/blob/master/Untitled%20Diagram.png) 
+

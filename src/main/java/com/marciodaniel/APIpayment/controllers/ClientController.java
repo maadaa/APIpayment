@@ -3,6 +3,8 @@ package com.marciodaniel.APIpayment.controllers;
 import com.marciodaniel.APIpayment.domain.Client;
 import com.marciodaniel.APIpayment.dtos.ClientDto;
 import com.marciodaniel.APIpayment.services.impl.ClientServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +22,8 @@ import java.util.List;
 @CrossOrigin("*")
 public class ClientController {
 
+    private final Logger logger = LogManager.getLogger(ClientController.class);
+
     private final ClientServiceImpl clientService;
 
     @Autowired
@@ -29,6 +33,8 @@ public class ClientController {
 
     @GetMapping("/all")
     public ResponseEntity<List<ClientDto>> findAll() {
+        logger.info("List All Clients");
+
         List<Client> clients = this.clientService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(this.convertToDto(clients));

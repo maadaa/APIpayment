@@ -14,10 +14,10 @@ import com.marciodaniel.APIpayment.dtos.PaymentDto;
 import com.marciodaniel.APIpayment.dtos.PaymentInfoDto;
 import com.marciodaniel.APIpayment.enums.PaymentTypeEnum;
 import com.marciodaniel.APIpayment.factorys.PaymentFactory;
-import com.marciodaniel.APIpayment.services.impl.BuyerServiceImpl;
-import com.marciodaniel.APIpayment.services.impl.CardServiceImpl;
 import com.marciodaniel.APIpayment.services.impl.ClientServiceImpl;
 import com.marciodaniel.APIpayment.services.impl.PaymentServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,31 +41,37 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class PaymentController {
 
+    private final Logger logger = LogManager.getLogger(PaymentController.class);
+
     private final ClientServiceImpl clientService;
-
-    private final CardServiceImpl cardService;
-
-    private final BuyerServiceImpl buyerService;
 
     private final PaymentServiceImpl paymentService;
 
     @Autowired
-    public PaymentController(ClientServiceImpl clientService, CardServiceImpl cardService, BuyerServiceImpl buyerService, PaymentServiceImpl paymentService) {
+    public PaymentController(ClientServiceImpl clientService, PaymentServiceImpl paymentService) {
         this.clientService = clientService;
-        this.cardService = cardService;
-        this.buyerService = buyerService;
         this.paymentService = paymentService;
     }
 
     @PostMapping("/conclude")
     public ResponseEntity<PaymentInfoDto> conclude(@Valid @RequestBody PaymentInfoDto paymentInfoDto, BindingResult result) {
 
+        logger.info("Valid has Errors");
         if (result.hasErrors()) {
+            logger.error("Errors on valid Payment Data", result.getAllErrors());
+
             throw  new BindingResultException("Valid errors message", result);
         }
 
+        logger.info("Convert DTO to Payment");
         Payment payment = this.convertDTOtoPayment(paymentInfoDto);
 
+        logger.info("Searching for client");
+        Optional<Client> client = this.clientService.findById(payment.getClient().getId());
+
+        client.orElseThrow(() -> new ObjectNotFoundException("Client not found, id: " + payment.getClient().getId() + ", Type: " + Client.class.getName()));
+
+        logger.info("insert payment");
         this.paymentService.save(payment);
 
         return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(this.convertToDto(payment));
@@ -73,6 +79,7 @@ public class PaymentController {
 
     @GetMapping("/status")
     public ResponseEntity<PaymentInfoDto> checkPaymentStatus(@RequestParam(value = "idPayment") Long idPayment) {
+        logger.info("Searching payment for check status");
         Optional<Payment> payment = this.paymentService.findById(idPayment);
 
         payment.orElseThrow(() -> new ObjectNotFoundException("Payment not found, id: " + idPayment + ", Type: " + Payment.class.getName()));
@@ -82,6 +89,7 @@ public class PaymentController {
 
     @GetMapping("/all")
     public ResponseEntity<List<PaymentInfoDto>> listAll() {
+        logger.info("List All Payments");
         List<Payment> payments = this.paymentService.findAll();
 
         List<PaymentInfoDto> paymentInfoDtos = new ArrayList<>();

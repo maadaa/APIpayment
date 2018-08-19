@@ -50,5 +50,5 @@ Durante o desenvolvimento fiz a escolha de utilizar o Pattern Factory para criar
 sem ter a necessidade de alterar o código colocando comportamentos diferentes de acordo com o tipo, deixando a própria classe se resolver.
 
 OBS: No pacote raiz do projeto temos um arquivo para ser importado no Postman, assim pode ter alguns testes para interação com a API
-o arquivo é o [APIpayment - MOIP.postman_collection.json]()
+o arquivo é o [APIpayment - MOIP.postman_collection.json](https://github.com/moreiraMD/APIpayment/blob/master/APIpayment%20-%20MOIP.postman_collection.json)
 

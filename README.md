@@ -43,6 +43,12 @@ Para realizar este teste foram escolhidas as seguintes tecnologias:
 Para o Banco de Dados foi adotado a seguinte estrutura para tabelas que pode ser visualizada nesta imagem: 
 ![Estrutura do Banco](https://github.com/moreiraMD/APIpayment/blob/master/Untitled%20Diagram.png)
 
+Os status para o pagamento são:
+
+- R: Recusado
+- W: Aguardando(Ainda não foi pago)
+- A: Aceito
+
 Já na escolha do Spring para desenvolver a aplicação foi simples, ele me forneceria todas ferramentas para realização da API quanto para comunicar com
 o banco, realizar os testes unitários e poder consumir a API gerada para simular uma integração.
 

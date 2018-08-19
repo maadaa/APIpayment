@@ -7,7 +7,7 @@ Simples serviço para fornecer uma API para pagamento aos nossos clientes e um c
 Tenha na sua máquina as seguintes tecnologias:
 - Docker
 - Java 8
-- Maven
+- Maven 3
 
 Primeiro vamos subir nosso container para o banco de dados, um mysql:
 ```sh

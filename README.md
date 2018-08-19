@@ -40,5 +40,15 @@ Para realizar este teste foram escolhidas as seguintes tecnologias:
 - Spring Framework
 - MySql
 
-Para o Banco de Dados foi adotado a seguinte estrutura para tabelas que pode ser visualizada nesta imagem: ![Estrutura do Banco](https://github.com/moreiraMD/APIpayment/blob/master/Untitled%20Diagram.png) 
+Para o Banco de Dados foi adotado a seguinte estrutura para tabelas que pode ser visualizada nesta imagem: 
+![Estrutura do Banco](https://github.com/moreiraMD/APIpayment/blob/master/Untitled%20Diagram.png)
+
+Já na escolha do Spring para desenvolver a aplicação foi simples, ele me forneceria todas ferramentas para realização da API quanto para comunicar com
+o banco, realizar os testes unitários e poder consumir a API gerada para simular uma integração.
+
+Durante o desenvolvimento fiz a escolha de utilizar o Pattern Factory para criar o pagamento de acordo com seu tipo, onde ele saberia como se comportar
+sem ter a necessidade de alterar o código colocando comportamentos diferentes de acordo com o tipo, deixando a própria classe se resolver.
+
+OBS: No pacote raiz do projeto temos um arquivo para ser importado no Postman, assim pode ter alguns testes para interação com a API
+o arquivo é o [APIpayment - MOIP.postman_collection.json]()
 

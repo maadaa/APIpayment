@@ -27,6 +27,15 @@ public class PaymentDto {
 
     private Long boletoNumber;
 
+    public PaymentDto(Long id, BigDecimal amount, String type, String status, CardDto card, Long boletoNumber) {
+        this.id = id;
+        this.amount = amount;
+        this.type = type;
+        this.status = status;
+        this.card = card;
+        this.boletoNumber = boletoNumber;
+    }
+
     public Long getId() {
         return id;
     }

@@ -25,6 +25,14 @@ public class CardDto {
     @NotNull(message = "CVV is empty of Card")
     private int cvv;
 
+    public CardDto(Long id, String holderName, String number, String expirationDate, int cvv) {
+        this.id = id;
+        this.holderName = holderName;
+        this.number = number;
+        this.expirationDate = expirationDate;
+        this.cvv = cvv;
+    }
+
     public Long getId() {
         return id;
     }

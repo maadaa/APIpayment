@@ -62,6 +62,12 @@ public abstract class Payment {
 
     }
 
+    public Payment(Client client, Buyer buyer, Card card) {
+        this.client = client;
+        this.buyer = buyer;
+        this.card = card;
+    }
+
     public Payment(Card card) {
         this.card = card;
     }

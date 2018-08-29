@@ -1,9 +1,6 @@
 package com.marciodaniel.APIpayment.factorys;
 
-import com.marciodaniel.APIpayment.domain.BoletoPayment;
-import com.marciodaniel.APIpayment.domain.Card;
-import com.marciodaniel.APIpayment.domain.CreditCardPayment;
-import com.marciodaniel.APIpayment.domain.Payment;
+import com.marciodaniel.APIpayment.domain.*;
 import com.marciodaniel.APIpayment.dtos.PaymentDto;
 import com.marciodaniel.APIpayment.enums.PaymentTypeEnum;
 
@@ -27,50 +24,17 @@ public class PaymentFactory {
         return instance;
     }
 
-    public static Payment create(PaymentTypeEnum paymentType) {
-        if (paymentType != null) {
-            switch (paymentType) {
-                case CARD:
-                    return new CreditCardPayment();
-                case BOLETO:
-                    return new BoletoPayment();
-                default:
-                    break;
-            }
+    private static Payment create(PaymentTypeEnum paymentType, Card card, Buyer buyer, Client client) {
+        if (PaymentTypeEnum.CARD.equals(paymentType)) {
+            return new CreditCardPayment(client, buyer, card);
         }
 
-        return null;
+        return new BoletoPayment(client, buyer, card);
     }
 
-    public static Payment create(String type) {
-        if (type != null) {
-            PaymentTypeEnum paymentTypeEnum = PaymentTypeEnum.valueOf(type);
-            switch (paymentTypeEnum) {
-                case BOLETO:
-                    return new BoletoPayment();
-                case CARD:
-                    return new CreditCardPayment();
-                default:
-                    break;
-            }
-        }
-
-        return null;
-    }
-
-    public static Payment create(PaymentDto paymentDto, Card card) {
-        String type = paymentDto.getType();
-        if (type != null) {
-            PaymentTypeEnum paymentTypeEnum = PaymentTypeEnum.byValue(type);
-            switch (paymentTypeEnum) {
-                case BOLETO:
-                    return new BoletoPayment();
-                case CARD:
-                    return new CreditCardPayment(card);
-                default:
-                    break;
-            }
-        }
+    public static Payment create(String type, Card card, Buyer buyer, Client client) {
+        if(type != null)
+            return create(PaymentTypeEnum.valueOf(type), card, buyer, client);
 
         return null;
     }

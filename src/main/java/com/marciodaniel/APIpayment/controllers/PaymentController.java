@@ -64,7 +64,7 @@ public class PaymentController {
         }
 
         logger.info("Convert DTO to Payment");
-        Payment payment = this.convertDTOtoPayment(paymentInfoDto);
+        Payment payment = paymentInfoDto.paymentFor();
 
         logger.info("Searching for client");
         Optional<Client> client = this.clientService.findById(payment.getClient().getId());
@@ -74,7 +74,7 @@ public class PaymentController {
         logger.info("insert payment");
         this.paymentService.save(payment);
 
-        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(this.convertToDto(payment));
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(PaymentInfoDto.paymentInfoDtoFor(payment));
     }
 
     @GetMapping("/status")
@@ -84,7 +84,7 @@ public class PaymentController {
 
         payment.orElseThrow(() -> new ObjectNotFoundException("Payment not found, id: " + idPayment + ", Type: " + Payment.class.getName()));
 
-        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(payment.map(this::convertToDto).orElse(null));
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(payment.map(PaymentInfoDto::paymentInfoDtoFor).orElse(null));
     }
 
     @GetMapping("/all")
@@ -94,65 +94,8 @@ public class PaymentController {
 
         List<PaymentInfoDto> paymentInfoDtos = new ArrayList<>();
 
-        payments.forEach(payment -> paymentInfoDtos.add(this.convertToDto(payment)));
+        payments.forEach(payment -> paymentInfoDtos.add(PaymentInfoDto.paymentInfoDtoFor(payment)));
 
         return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(paymentInfoDtos);
-    }
-
-    private PaymentInfoDto convertToDto(Payment payment) {
-        PaymentInfoDto paymentReceiverDto = new PaymentInfoDto();
-
-        BuyerDto buyerDto = new BuyerDto();
-        buyerDto.setEmail(payment.getBuyer().getEmail());
-        buyerDto.setName(payment.getBuyer().getName());
-        buyerDto.setCpf(payment.getBuyer().getCpf());
-        paymentReceiverDto.setBuyer(buyerDto);
-
-        ClientDto clientDto = new ClientDto();
-        clientDto.setId(payment.getClient().getId());
-        clientDto.setSocialName(payment.getClient().getSocialName());
-        paymentReceiverDto.setClient(clientDto);
-
-        PaymentDto paymentDto = new PaymentDto();
-        paymentDto.setId(payment.getId());
-        paymentDto.setAmount(payment.getAmount());
-        paymentDto.setType(payment.getPaymentType().getValue());
-        paymentDto.setBoletoNumber(payment.getBoletoNumber());
-        paymentDto.setStatus(payment.getPaymentStatus().getValue());
-        paymentReceiverDto.setPayment(paymentDto);
-
-        if (payment.getCard() != null) {
-            CardDto cardDto = new CardDto();
-            cardDto.setNumber(payment.getCard().getNumber());
-            cardDto.setHolderName(payment.getCard().getHolderName());
-            paymentReceiverDto.getPayment().setCard(cardDto);
-        }
-
-        return paymentReceiverDto;
-    }
-
-    private Payment convertDTOtoPayment(PaymentInfoDto paymentInfoDto) {
-        ClientDto clientDto = paymentInfoDto.getClient();
-        PaymentDto paymentDto = paymentInfoDto.getPayment();
-        BuyerDto buyerDto = paymentInfoDto.getBuyer();
-        CardDto cardDto = paymentInfoDto.getPayment().getCard();
-
-        Client client = new Client(clientDto.getId());
-        Buyer buyer = new Buyer(buyerDto.getName(), buyerDto.getEmail(), buyerDto.getCpf());
-        Card card = null;
-        if (cardDto != null) {
-            card = new Card(cardDto.getHolderName(), cardDto.getNumber(), cardDto.getExpirationDate(), cardDto.getCvv());
-        }
-
-        Payment payment = PaymentFactory.create(paymentDto, card);
-
-        if (payment != null) {
-            payment.setClient(client);
-            payment.setAmount(paymentDto.getAmount());
-            payment.setBuyer(buyer);
-            payment.setPaymentType(PaymentTypeEnum.byValue(paymentDto.getType()));
-        }
-
-        return payment;
     }
 }

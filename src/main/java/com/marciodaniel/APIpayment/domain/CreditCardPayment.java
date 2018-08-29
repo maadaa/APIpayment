@@ -11,8 +11,8 @@ public class CreditCardPayment extends Payment {
         super();
     }
 
-    public CreditCardPayment(Card card) {
-        super(card);
+    public CreditCardPayment(Client client, Buyer buyer, Card card) {
+        super(client, buyer, card);
     }
 
     @Override

@@ -11,6 +11,10 @@ public class BoletoPayment extends Payment {
         super();
     }
 
+    public BoletoPayment(Client client, Buyer buyer, Card card) {
+        super(client, buyer, card);
+    }
+
     @Override
     public void confirmPayment() {
         this.boletoNumber = ((Double) (Math.random() * (Math.pow(10, 10)))).longValue();
